@@ -47,7 +47,7 @@ export const EventShow = (props) => (
                 <TextField label="notes" source="notes" />
             </Tab>
             <Tab label="Registrations">
-                <ReferenceManyField reference="participants" target={data.id} addLabel={false}>
+                <ReferenceManyField reference="participants" target="1" addLabel={false}>
                     <Datagrid>
                         <TextField source="firstName" />
                         <TextField source="lastName" />
