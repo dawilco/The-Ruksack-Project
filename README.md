@@ -3,7 +3,7 @@ The Ruksack Project aims to create modern, easy to use and effective registratio
 ## Getting dev environment up and running
 Copy `.env.example` to `.env` and configure with your local postgres server.
 
-In rucksack-client, run `sequelize-cli db:migrate` to setup the database.
+In `rucksack-client/database`, run `sequelize-cli db:migrate` to setup the database. This also requires that you have sequelize-cli installed on your machine globally.
 
 The API must be running
 ```
