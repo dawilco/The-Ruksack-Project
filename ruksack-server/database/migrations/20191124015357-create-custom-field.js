@@ -1,26 +1,25 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Users', {
+    return queryInterface.createTable('CustomFields', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      email: {
+      type: {
+        type: Sequelize.ENUM({
+          values: ['textField','radio','checkbox','select']
+        })
+      },
+      title: {
         type: Sequelize.STRING
       },
-      role: {
-        type: Sequelize.STRING
+      required: {
+        type: Sequelize.BOOLEAN
       },
-      password: {
-        type: Sequelize.STRING
-      },
-      salt: {
-        type: Sequelize.STRING
-      },
-      addressId: {
+      EventId: {
         type: Sequelize.INTEGER
       },
       createdAt: {
@@ -34,6 +33,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Users');
+    return queryInterface.dropTable('CustomFields');
   }
 };

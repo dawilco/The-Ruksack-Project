@@ -11,14 +11,26 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
+      type: {
+        type: Sequelize.STRING
+      },
       notes: {
         type: Sequelize.TEXT
+      },
+      registrationOpen: {
+        type: Sequelize.DATE
+      },
+      registrationClose: {
+        type: Sequelize.DATE
       },
       eventStart: {
         type: Sequelize.DATE
       },
       eventEnd: {
         type: Sequelize.DATE
+      },
+      AddressId: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
