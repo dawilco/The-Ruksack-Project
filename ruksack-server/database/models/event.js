@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   Event.associate = function(models) {
     Event.belongsToMany(models.Participant, {through: 'EventParticipants'});
     Event.belongsTo(models.Address);
+    Event.hasMany(models.CustomField);
   };
   return Event;
 };

@@ -1,4 +1,5 @@
 const models = require('../../database/models');
+const helper = require('./helper');
 
 const all = async (req, res) => {
     try {
@@ -12,9 +13,10 @@ const all = async (req, res) => {
 
 const create = async (req, res) => {
     try {
-        const address = await models.Address.create(req.body.address);
         const event = await models.Event.create(req.body);
+        const address = await models.Address.create(req.body.address);
         event.setAddress(address);
+        const customFields = helper.saveCustomFields(req.body.customFields, event);
         const ret = {
             id: event.id,
             name: event.name,
@@ -23,6 +25,7 @@ const create = async (req, res) => {
             eventEnd: event.end,
             updatedAt: event.updatedAt,
             createdAt: event.createdAt,
+            customFields: customFields,
             address: address
         }
         return res.status(200).json(ret);

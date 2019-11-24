@@ -1,7 +1,9 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const CustomField = sequelize.define('CustomField', {
-    type: DataTypes.ENUM,
+    type: DataTypes.ENUM({
+      values: ['textField','radio','checkbox','select']
+    }),
     title: DataTypes.STRING,
     required: DataTypes.BOOLEAN,
     EventId: DataTypes.INTEGER
