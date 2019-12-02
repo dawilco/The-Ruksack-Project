@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     AddressId: DataTypes.INTEGER
   }, {});
   Event.associate = function(models) {
-    Event.belongsToMany(models.Participant, {through: 'EventParticipants'});
+    Event.belongsToMany(models.Participant, {through: 'Registration'});
     Event.belongsTo(models.Address);
     Event.hasMany(models.CustomField);
   };

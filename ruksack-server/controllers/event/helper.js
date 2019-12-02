@@ -4,11 +4,12 @@ const saveCustomFields = (fields, event) => {
     const customFields = [];
     fields.forEach(field => {
         models.CustomField.create(field).then((customField) =>{
-            customFields.push(customField);
             event.setCustomFields(customField);
         });
+        customFields.push(field);
     });
-    return customFields;       
+    console.log(customFields);
+    return customFields;   
 }
 
 module.exports = {

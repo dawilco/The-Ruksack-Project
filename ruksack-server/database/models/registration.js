@@ -1,11 +1,11 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const EventParticipant = sequelize.define('EventParticipant', {
+  const Registration = sequelize.define('Registration', {
     EventId: DataTypes.INTEGER,
     ParticipantId: DataTypes.INTEGER
   }, {});
-  EventParticipant.associate = function(models) {
+  Registration.associate = function(models) {
     // associations can be defined here
   };
-  return EventParticipant;
+  return Registration;
 };

@@ -17,6 +17,12 @@ module.exports = {
       notes: {
         type: Sequelize.TEXT
       },
+      fee: {
+        type: Sequelize.DOUBLE
+      },
+      feeRules: {
+        type: Sequelize.INTEGER
+      },
       registrationOpen: {
         type: Sequelize.DATE
       },

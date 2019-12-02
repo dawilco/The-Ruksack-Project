@@ -38,7 +38,7 @@ const createParticipant = async (req, res) => {
 const getEventParticipants = async (req, res) => {
     try {
         // will need to change back to param if go the /event/id/participant route
-        const event = await models.Event.findByPk(req.query.eventId, {
+        const event = await models.Event.findByPk(req.params.id, {
             include: [
                 {
                     model: models.Participant,
