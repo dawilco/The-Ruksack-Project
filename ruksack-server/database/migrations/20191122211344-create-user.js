@@ -12,7 +12,9 @@ module.exports = {
         type: Sequelize.STRING
       },
       role: {
-        type: Sequelize.STRING
+        type: Sequelize.ENUM({
+          values: ['participant','organizer']
+        })
       },
       password: {
         type: Sequelize.STRING

@@ -1,15 +1,16 @@
 const { Router } = require('express');
 const auth = require('../middleware/auth');
 const controllers = require('../controllers');
-const eventControllers = require('../controllers/event')
+const eventControllers = require('../controllers/event');
+const authControllers = require('../controllers/auth');
 
 const router = Router();
 
 router.get('/', (req, res) => res.send('Welcome'))
 
 // ------------------Auth------------------ //
-router.post('/login', controllers.authUser)
-router.post('/registration', controllers.newUser)
+router.post('/login', authControllers.authUser)
+router.post('/registration', authControllers.newUser)
 
 // ------------------Events------------------ //
 router.get('/events', eventControllers.all);

@@ -5,7 +5,9 @@ require('dotenv').config();
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     email: DataTypes.STRING,
-    role: DataTypes.STRING,
+    role: DataTypes.ENUM({
+      values: ['participant','organizer']
+    }),
     password: DataTypes.STRING,
     salt: DataTypes.STRING
   }, {});

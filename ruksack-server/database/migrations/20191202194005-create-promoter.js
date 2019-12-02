@@ -1,21 +1,24 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Registrations', {
+    return queryInterface.createTable('Promoters', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      EventId: {
+      name: {
+        type: Sequelize.STRING
+      },
+      phone: {
+        type: Sequelize.STRING
+      },
+      stripeId: {
         type: Sequelize.INTEGER
       },
-      ParticipantId: {
+      UserId: {
         type: Sequelize.INTEGER
-      },
-      amountPaid: {
-        type: Sequelize.DOUBLE
       },
       createdAt: {
         allowNull: false,
@@ -28,6 +31,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Registration');
+    return queryInterface.dropTable('Promoters');
   }
 };
