@@ -1,2 +1,4 @@
 ruksack-server/node_modules
+ruksack-server/.env
+
 ruksack-client/node_modules
