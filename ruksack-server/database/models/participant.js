@@ -4,11 +4,12 @@ module.exports = (sequelize, DataTypes) => {
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
     comment: DataTypes.TEXT,
-    gender: DataTypes.TEXT
+    gender: DataTypes.TEXT,
+    birthday: DataTypes.DATEONLY
   }, {});
   Participant.associate = function(models) {
-    // associations can be defined here
     Participant.belongsToMany(models.Event,{through: 'Registration'});
+    Participant.belongsTo(models.User);
   };
   return Participant;
-};
+};  

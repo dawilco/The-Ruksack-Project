@@ -20,6 +20,13 @@ module.exports = {
       gender: {
         type: Sequelize.TEXT
       },
+      birthday: {
+        type: Sequelize.DATEONLY
+      }, 
+      UserId: {
+        allowNull: true,
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

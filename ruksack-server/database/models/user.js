@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     salt: DataTypes.STRING
   }, {});
   User.associate = function(models) {
-    // associations can be defined here
+    User.hasOne(models.Participant);
+    User.hasOne(models.Organizer);
   };
 
   User.prototype.generateAuthToken = function() {

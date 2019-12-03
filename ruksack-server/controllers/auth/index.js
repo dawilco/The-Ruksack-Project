@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const models = require('../../database/models');
 
 const authUser = async (req, res) => {
     try {
@@ -36,6 +37,26 @@ const newUser = async (req, res) => {
                 password: hashed
             }
         );
+        if (req.body.participant) {
+            const participant = await models.Participant.create(
+                {
+                    firstName: req.body.participant.firstName,
+                    lastName: req.body.participant.lastName,
+                    comment: req.body.participant.comment,
+                    gender: req.body.participant.gender,
+                    birthday: req.body.participant.birthday
+                }
+            );
+            user.setParticipant(participant);
+        } else if (req.body.organizer) {
+            const organizer = await models.Organizer.create(
+                {
+                    name: req.body.organizer.name,
+                    phone: req.body.organizer.phone
+                }
+            );
+            user.setOrganizer(organizer);
+        }
         const token = user.generateAuthToken();
         return res.status(200).json({auth: token})
     } catch (err) {
