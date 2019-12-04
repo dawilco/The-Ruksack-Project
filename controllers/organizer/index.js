@@ -13,7 +13,7 @@ const newStripeAccount = async (req, res) => {
           ],
           business_type: 'company',
           business_profile: {
-            mcc: 'software',
+            mcc: 8999,
             url: 'http://topviewsports.com',
           },
           company: {
@@ -49,14 +49,37 @@ const newStripeAccount = async (req, res) => {
             } else {
                 stripe.accounts.createPerson(
                     account.id,
-                    {first_name: 'Jane', last_name: 'Diaz '},
+                    {
+                        first_name: 'Jane', 
+                        last_name: 'Diaz ',
+                        ssn_last_4: '0000',
+                        dob: {
+                            day: '03',
+                            month: '03',
+                            year: '1998',
+                        },
+                        address: {
+                            city: 'Pendleton',
+                            country: 'US',
+                            line1: '19 Maverick Dr',
+                            line2: '',
+                            postal_code: '29670',
+                            state: 'SC',
+                        },
+                        phone: '0000000000',
+                        email: 'bob4@gmail.com',
+                        relationship: {
+                            owner: true,
+                            representative: true,
+                        }
+                    },
                     function(err, person) {
                         if (err) {
                             res.status(500).send({error: err});
                         } else {
                             stripe.accounts.update(
                                 account.id,
-                                {metadata: {order_id: '6735'}},
+                                {company: {owners_provided: true}},
                                 function(err, account) {
                                     res.sendStatus(200)
                                 }
