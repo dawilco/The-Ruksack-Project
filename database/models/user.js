@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   User.prototype.generateAuthToken = function() {
-    const token = jwt.sign({_id: this._id, role: this.role}, process.env.APP_KEY);
+    const token = jwt.sign({id: this.id, role: this.role}, process.env.APP_KEY);
     return token;
   }
 

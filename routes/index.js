@@ -22,7 +22,8 @@ router.put('/events/:id', eventControllers.update);
 router.get('/events/:id/participants', controllers.getEventParticipants);
 
 // ----------------------Events---------------------- //
-router.post('/organizer/stripe', organizerControllers.newStripeAccount);
+router.post('/organizer/stripe/company', auth, organizerControllers.newStripeAccount);
+router.post('/organizer/stripe/representative', auth, organizerControllers.newStripeRepresenative);
 
 // --------------------Participants-------------------- //
 router.get('/participants', controllers.getParticipants);

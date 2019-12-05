@@ -1,97 +1,119 @@
 require('dotenv').config();
+const helpers = require('./helpers');
+const models = require('../../database/models');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const newStripeAccount = async (req, res) => {
+    if (req.user.role !== 'organizer') {
+        return res.status(401).send({error: 'Not Authorized'})
+    }
     stripe.accounts.create(
         {
           type: 'custom',
-          country: 'US',
-          email: 'bob+4@example.com',
-          requested_capabilities: [
-            'card_payments',
-            'transfers',
-          ],
-          business_type: 'company',
+          country: req.body.country,
+          email: req.body.email,
+          requested_capabilities: req.body.requested_capabilities,
+          business_type: req.body.business_type,
           business_profile: {
-            mcc: 8999,
-            url: 'http://topviewsports.com',
+            mcc: req.body.business_profile.mcc,
+            url: req.body.business_profile.url,
           },
           company: {
               address: {
-                  city: 'Pendleton',
-                  country: 'US',
-                  line1: '19 Maverick Dr',
-                  line2: '',
-                  postal_code: '29670',
-                  state: 'SC',
+                  city: req.body.company.address.city,
+                  country: req.body.company.address.country,
+                  line1: req.body.company.address.line1,
+                  line2: req.body.company.address.line2,
+                  postal_code: req.body.company.address.postal_code,
+                  state: req.body.company.address.state,
               },
-              name: 'Top View Sports',
-              phone: '0000000000',
-              tax_id: '000000000',
-
+              name: req.body.company.name,
+              phone: req.body.company.phone,
+              tax_id: req.body.company.tax_id,
           },
           external_account: {
-              object: 'bank_account',
-              country: 'US',
-              currency: 'USD',
-              routing_number: '110000000',
-              account_number: '000123456789',
+              object: req.body.external_account.object,
+              country: req.body.external_account.country,
+              currency: req.body.external_account.currency,
+              routing_number: req.body.external_account.routing_number,
+              account_number: req.body.external_account.account_number,
           },
           tos_acceptance: {
-              date: 1554232875,
-              ip: '198.21.229.137',
-              user_agent: null,
+              date: Math.floor(Date.now()/1000),
+              ip: req.connection.remoteAddress,
+              user_agent: req.headers["User-Agent"],
           }
         },
         function(err, account) {
             if (err) {
-                res.status(500).send({error: err});
+                return res.status(500).send({error: err});
             } else {
-                stripe.accounts.createPerson(
-                    account.id,
-                    {
-                        first_name: 'Jane', 
-                        last_name: 'Diaz ',
-                        ssn_last_4: '0000',
-                        dob: {
-                            day: '03',
-                            month: '03',
-                            year: '1998',
-                        },
-                        address: {
-                            city: 'Pendleton',
-                            country: 'US',
-                            line1: '19 Maverick Dr',
-                            line2: '',
-                            postal_code: '29670',
-                            state: 'SC',
-                        },
-                        phone: '0000000000',
-                        email: 'bob4@gmail.com',
-                        relationship: {
-                            owner: true,
-                            representative: true,
-                        }
-                    },
-                    function(err, person) {
-                        if (err) {
-                            res.status(500).send({error: err});
-                        } else {
-                            stripe.accounts.update(
-                                account.id,
-                                {company: {owners_provided: true}},
-                                function(err, account) {
-                                    res.sendStatus(200)
-                                }
-                              );
-                        }
-                    }
-                );
+                helpers.updateOrganizerStripeId(req.user.id, account.id).then(() => {
+                    return res.sendStatus(201);
+                }).catch((err) => {
+                    return res.status(500).send({error: err})
+                });
             }
         }
-      );
+    );
 }
 
+const newStripeRepresenative = async (req, res) => {
+    if (req.user.role !== 'organizer') {
+        return res.status(401).send({error: 'Not Authorized'})
+    }
+    helpers.getUserOrganizer(req.user.id).then((organizer) => {
+        const stripeId = organizer.dataValues.stripeId;
+        stripe.accounts.createPerson(
+            stripeId,
+            {
+                first_name: req.body.first_name, 
+                last_name: req.body.last_name,
+                ssn_last_4: req.body.ssn_last_4,
+                dob: {
+                    day: req.body.dob.day,
+                    month: req.body.dob.month,
+                    year: req.body.dob.year,
+                },
+                address: {
+                    city: req.body.address.city,
+                    country: req.body.address.country,
+                    line1: req.body.address.line1,
+                    line2: req.body.address.line2,
+                    postal_code: req.body.address.postal_code,
+                    state: req.body.address.state,
+                },
+                phone: req.body.phone,
+                email: req.body.email,
+                relationship: {
+                    owner: req.body.relationship.owner,
+                    representative: req.body.relationship.representative,
+                    title: req.body.relationship.title,
+                }
+            },
+            function(err, person) {
+                if (err) {
+                    console.log(err)
+                    return res.status(500).send({error: err.message});
+                } else {
+                    stripe.accounts.update(
+                        stripeId,
+                        {company: {owners_provided: true}},
+                        function(err, account) {
+                            return res.sendStatus(201);
+                        }
+                    );
+                }
+            }
+        );
+    }).catch((err) => {
+        return res.status(500).send({error: err})
+    });
+    console.log(stripeId);
+}
+
+
 module.exports = {
-    newStripeAccount
+    newStripeAccount,
+    newStripeRepresenative
 }

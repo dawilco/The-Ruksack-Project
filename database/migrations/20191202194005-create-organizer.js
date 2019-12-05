@@ -15,7 +15,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       stripeId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       UserId: {
         type: Sequelize.INTEGER
