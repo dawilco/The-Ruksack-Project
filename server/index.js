@@ -1,9 +1,10 @@
 const express = require('express');
+const bearerToken = require('express-bearer-token');
 const routes = require('../routes');
 
 const server = express();
 server.use(express.json());
-
+server.use(bearerToken());
 // maybe need to move to a middleware
 server.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
