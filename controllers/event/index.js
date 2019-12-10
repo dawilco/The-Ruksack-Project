@@ -13,9 +13,15 @@ const all = async (req, res) => {
 
 const create = async (req, res) => {
     try {
+        const user = await models.User.findByPk(req.user.id);
+        const organizer = await user.getOrganizer();
+
         const event = await models.Event.create(req.body);
         const address = await models.Address.create(req.body.address);
+
         event.setAddress(address);
+        event.setOrganizer(organizer.id);
+        
         const customFields = helper.saveCustomFields(req.body.customFields, event);
         const ret = {
             id: event.id,
