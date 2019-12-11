@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     notes: DataTypes.TEXT,
     registrationOpen: DataTypes.DATE,
     registrationClose: DataTypes.DATE,
+    fee: DataTypes.DOUBLE,
     eventStart: DataTypes.DATE,
     eventEnd: DataTypes.DATE,
     AddressId: DataTypes.INTEGER,

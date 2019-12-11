@@ -21,7 +21,7 @@ const create = async (req, res) => {
 
         event.setAddress(address);
         event.setOrganizer(organizer.id);
-        
+
         const customFields = helper.saveCustomFields(req.body.customFields, event);
         const ret = {
             id: event.id,
@@ -43,7 +43,14 @@ const create = async (req, res) => {
 const get = async (req, res) => {
     const id = req.params.id
     try {
-        const event = await models.Event.findByPk(id);
+        const event = await models.Event.findByPk(id, {
+            include: [
+                {
+                    model: models.CustomField,
+                    as: "CustomFields"
+                }
+            ]
+        });
         return res.status(200).json(event);
     } catch (err) {
         return res.status(500).json({error: err.message});

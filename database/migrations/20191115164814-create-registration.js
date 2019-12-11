@@ -17,6 +17,9 @@ module.exports = {
       amountPaid: {
         type: Sequelize.DOUBLE
       },
+      customDataField: {
+        type: Sequelize.JSON
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -28,6 +31,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Registration');
+    return queryInterface.dropTable('Registrations');
   }
 };

@@ -6,7 +6,12 @@ const create = async (req, res) => {
         const participant = await user.getParticipant();
         const event = await models.Event.findByPk(req.body.EventId);
 
-        event.addParticipant(participant, { through: {amountPaid: req.body.amountPaid}});
+        event.addParticipant(participant, { through: 
+            {
+                amountPaid: req.body.amountPaid,
+                customDataField: req.body.customDataField
+            }
+        });
 
         return res.sendStatus(201);
     } catch (err) {

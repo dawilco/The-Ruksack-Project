@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     }),
     title: DataTypes.STRING,
     required: DataTypes.BOOLEAN,
+    values: DataTypes.ARRAY(DataTypes.STRING),
     EventId: DataTypes.INTEGER
   }, {});
   CustomField.associate = function(models) {
