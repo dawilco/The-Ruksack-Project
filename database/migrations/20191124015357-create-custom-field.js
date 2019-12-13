@@ -19,6 +19,9 @@ module.exports = {
       required: {
         type: Sequelize.BOOLEAN
       },
+      values: {
+        type: Sequelize.ARRAY(Sequelize.STRING)
+      },
       EventId: {
         type: Sequelize.INTEGER
       },

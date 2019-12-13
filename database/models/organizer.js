@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Organizer.associate = function(models) {
     Organizer.belongsTo(models.User);
+    Organizer.hasMany(models.Event);
   };
 
   Organizer.prototype.getStripeId = function() {

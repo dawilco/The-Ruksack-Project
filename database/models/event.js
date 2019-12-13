@@ -6,13 +6,16 @@ module.exports = (sequelize, DataTypes) => {
     notes: DataTypes.TEXT,
     registrationOpen: DataTypes.DATE,
     registrationClose: DataTypes.DATE,
+    fee: DataTypes.DOUBLE,
     eventStart: DataTypes.DATE,
     eventEnd: DataTypes.DATE,
-    AddressId: DataTypes.INTEGER
+    AddressId: DataTypes.INTEGER,
+    OrganizerId: DataTypes.INTEGER
   }, {});
   Event.associate = function(models) {
     Event.belongsToMany(models.Participant, {through: 'Registration'});
     Event.belongsTo(models.Address);
+    Event.belongsTo(models.Organizer);
     Event.hasMany(models.CustomField);
   };
   return Event;
