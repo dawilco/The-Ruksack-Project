@@ -24,7 +24,7 @@ const authUser = async (req, res) => {
 }
 
 const newUser = async (req, res) => {
-    const salt = new Date().toString();
+    const salt = Date.now();
     const password = req.body.password;
     const hashed = crypto.createHash('sha256').update(password+salt).digest('base64');
 
