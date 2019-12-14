@@ -1,4 +1,6 @@
 const models = require("../database/models");
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op
 
 const createParticipant = async (req, res) => {
     try {
@@ -42,11 +44,22 @@ const getParticipant = async (req, res) => {
 }
 
 const getParticipants = async (req, res) => {
-    if (req.query.eventId) {
-        return getEventParticipants(req, res);
+    const queryParams = {
+        limit: 25, 
+        order: [
+            ['lastName', 'ASC']
+        ],
+    }
+    if (req.query.limit) {
+        queryParams.limit = req.query.limit;
+    }
+    if (req.query.offset) {
+        queryParams.offset = req.query.offset;
+    }
+    if (req.query.filters) {
     }
     try {
-        const participants = await models.Participant.findAll();
+        const participants = await models.Participant.findAll(queryParams);
         res.setHeader('X-Total-Count', participants.length);
         return res.status(200).json(participants);
     } catch (err) {
