@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start-dev": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all && nodemon index.js",
-    "start": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate && node index.js",
+    "start": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all node index.js",
     "migrate": "npx sequelize-cli db:migrate",
     "migrate:reset": "npx sequelize-cli db:migrate:undo:all && npm run migrate",
     "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
@@ -23,6 +23,7 @@
     "express-session": "^1.17.0",
     "fs": "0.0.1-security",
     "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "path": "^0.12.7",
     "pg": "^7.12.1",

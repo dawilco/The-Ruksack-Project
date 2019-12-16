@@ -3,6 +3,7 @@ const auth = require('../middleware/auth');
 const controllers = require('../controllers');
 const eventControllers = require('../controllers/event');
 const authControllers = require('../controllers/auth');
+const participantControllers = require('../controllers/participant')
 const organizerControllers = require('../controllers/organizer');
 const registrationControllers = require('../controllers/registration');
 
@@ -29,7 +30,7 @@ router.post('/organizer/stripe/representative', auth, organizerControllers.newSt
 // --------------------Participants-------------------- //
 router.get('/participants', controllers.getParticipants);
 router.get('/participants/:id', controllers.getParticipant);
-router.post('/participants', controllers.createParticipant);
+router.post('/participants', participantControllers.create);
 router.put('/participants/:id', controllers.updateParticipant);
 
 // --------------------Registrion-------------------- //

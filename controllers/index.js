@@ -1,18 +1,7 @@
 const models = require("../database/models");
 const Sequelize = require('sequelize');
+const _ = require('lodash');
 const Op = Sequelize.Op
-
-const createParticipant = async (req, res) => {
-    try {
-        const participant = await models.Participant.create(req.body);
-        participant.addEvent(2)
-        return res.status(200).json({
-            participant
-      });
-    } catch (error) {
-      return res.status(500).json({ error: error.message });
-    }
-};
 
 const getEventParticipants = async (req, res) => {
     try {
@@ -49,6 +38,7 @@ const getParticipants = async (req, res) => {
         order: [
             ['lastName', 'ASC']
         ],
+        where: {}
     }
     if (req.query.limit) {
         queryParams.limit = req.query.limit;
@@ -56,14 +46,22 @@ const getParticipants = async (req, res) => {
     if (req.query.offset) {
         queryParams.offset = req.query.offset;
     }
-    if (req.query.filters) {
+    if (req.query.name) {
+        queryParams.where = {
+            [Op.or]: _.flatten(_.map(['firstName', 'lastName'], function(item){
+                return _.map(req.query.name.split(' '), function(q){
+                    return {[item]: { [Op.iLike] : `%${q}%`}}
+                })
+            }))
+        }
     }
     try {
         const participants = await models.Participant.findAll(queryParams);
-        res.setHeader('X-Total-Count', participants.length);
+        const total = await models.Participant.findAndCountAll();
+        res.setHeader('X-Total-Count', total.count);
         return res.status(200).json(participants);
     } catch (err) {
-        return res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: err.message });
     }
 }
 
@@ -83,7 +81,6 @@ const updateParticipant = async (req, res) => {
     }
 }
 module.exports = {
-    createParticipant,
     getParticipants,
     getEventParticipants,
     getParticipant,
