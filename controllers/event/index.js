@@ -19,7 +19,6 @@ const create = async (req, res) => {
         const event = await models.Event.create(req.body);
         const address = await models.Address.create(req.body.address);
 
-        event.setAddress(address);
         event.setOrganizer(organizer.id);
 
         const customFields = helper.saveCustomFields(req.body.customFields, event);
@@ -32,7 +31,6 @@ const create = async (req, res) => {
             updatedAt: event.updatedAt,
             createdAt: event.createdAt,
             customFields: customFields,
-            address: address
         }
         return res.status(200).json(ret);
   } catch (error) {
